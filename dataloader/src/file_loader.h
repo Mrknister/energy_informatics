@@ -8,7 +8,7 @@ extern "C" {
 void read_file ( const char * fname );
 
 
-    
+
 #if defined(__cplusplus)
 } /* extern "C" */
 #endif

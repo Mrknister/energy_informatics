@@ -3,13 +3,7 @@ project (analyze)
  
  
  
-set (PROJECT_INCLUDE_DIR ${PROJECT_SOURCE_DIR}/include)
-
- 
-set(LIBANALYZE_FILES
-${PROJECT_INCLUDE_DIR}/test2.h
-${PROJECT_INCLUDE_DIR}/test.h
-)
+set (PROJECT_INCLUDE_DIR ${PROJECT_SOURCE_DIR}/src)
 
 
 include_directories("${PROJECT_INCLUDE_DIR}")
