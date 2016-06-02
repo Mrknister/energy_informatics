@@ -4,9 +4,7 @@
 #include <sndfile.h>
 
 
-
-
-char file_ok ( SF_INFO* file_info, SNDFILE * file );
+static char file_ok ( SF_INFO* file_info, SNDFILE * file );
 
 void read_file ( const char * fname )
 {
@@ -23,7 +21,7 @@ void read_file ( const char * fname )
     sf_close ( file );
 }
 
-char file_ok ( SF_INFO* file_info, SNDFILE * file )
+static char file_ok ( SF_INFO* file_info, SNDFILE * file )
 {
     if ( file == 0 ) {
         printf ( "Could not load the file\n" );

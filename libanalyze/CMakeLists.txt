@@ -7,7 +7,7 @@ set (PROJECT_INCLUDE_DIR ${PROJECT_SOURCE_DIR}/src)
 
 
 include_directories("${PROJECT_INCLUDE_DIR}")
- 
+
  
 add_library(${PROJECT_NAME} INTERFACE)
 

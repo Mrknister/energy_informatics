@@ -4,10 +4,21 @@ project (dataloader)
 set (PROJECT_INCLUDE_DIR ${PROJECT_SOURCE_DIR}/src)
 set (PROJECT_SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/src)
  
-set(PROJECT1_SRCS 
+set(DATALOADER_SRCS
 ${PROJECT_SOURCE_DIR}/main.c
 ${PROJECT_SOURCE_DIR}/file_loader.c
+${PROJECT_SOURCE_DIR}/file_config_loader.c
+)
 
+# add ini file parser 
+
+set(INIH_SOURCES 
+"${EXTERNAL_DEPENDENCIES_DIR}/inih/ini.c"
+)
+include_directories("${EXTERNAL_DEPENDENCIES_DIR}/inih")
+set(DATALOADER_SRCS
+${DATALOADER_SRCS}
+${INIH_SOURCES}
 )
 
 set(DATA_LOADER_FILE_BUFFER_LEN 2056)
@@ -23,8 +34,10 @@ configure_file(data_loader_config.h.in data_loader_config.h)
 
 
 
-add_executable(${PROJECT_NAME}  ${PROJECT1_SRCS})
-target_link_libraries(${PROJECT_NAME} "${SNDFILE_LIBRARIES}")
+add_executable(${PROJECT_NAME}  ${DATALOADER_SRCS})
+target_link_libraries(${PROJECT_NAME} -lm)
 target_link_libraries(${PROJECT_NAME} analyze)
+target_link_libraries(${PROJECT_NAME} "${SNDFILE_LIBRARIES}")
+
 
 install (TARGETS ${PROJECT_NAME} DESTINATION bin)
