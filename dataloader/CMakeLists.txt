@@ -8,7 +8,21 @@ set(DATALOADER_SRCS
 ${PROJECT_SOURCE_DIR}/main.c
 ${PROJECT_SOURCE_DIR}/file_loader.c
 ${PROJECT_SOURCE_DIR}/file_config_loader.c
+${PROJECT_SOURCE_DIR}/smart_meter_channels.c
 )
+
+find_package(Doxygen)
+if(DOXYGEN_FOUND)
+configure_file(${CMAKE_CURRENT_SOURCE_DIR}/doc/Doxyfile.in ${CMAKE_CURRENT_BINARY_DIR}/Doxyfile @ONLY)
+add_custom_target(doc
+${DOXYGEN_EXECUTABLE} ${CMAKE_CURRENT_BINARY_DIR}/Doxyfile
+WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
+COMMENT "Generating API documentation with Doxygen" VERBATIM
+)
+endif(DOXYGEN_FOUND)
+
+
+
 
 # add ini file parser 
 

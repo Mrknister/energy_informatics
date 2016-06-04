@@ -15,13 +15,12 @@ static int handler(void* user, const char* section, const char* name,
     Calibration* calib = (Calibration*) user;
     printf("Parsing value '%s' '%s'\n", name, value);
     if (strcmp(name, "volts_per_adc_step") == 0) {
-        calib->volts_per_adc_step = (float) atof(value);
+        calib->volts_per_adc_step =  atof(value);
     } else if (strcmp(name, "phase_difference") == 0) {
-        calib->phase_difference = (float) atof(value);
+        calib->phase_difference =  atof(value);
     } else if (strcmp(name, "amps_per_adc_step") == 0) {
-        calib->amps_per_adc_step = (float) atof(value);
+        calib->amps_per_adc_step =  atof(value);
     } else {
-
         return 0;  /* unknown section/name, error */
     }
     return 1;
@@ -32,31 +31,11 @@ int parse_calibration(const char* filepath, Calibration* calib)
 
     if (ini_parse(filepath, handler, calib) < 0) {
         printf("Can't load '%s'\n", filepath);
-        return 1;
+        return 0;
     }
+    calib->number_of_adc_steps = 0x80000000;
     printf("Config loaded from %s: amps_per_adc_step=%.10e, phase_difference=%.10e, volts_per_adc_step=%.10e\n",
            filepath, calib->amps_per_adc_step, calib->phase_difference, calib->volts_per_adc_step);
-    return 0;
-}
-
-int open_meter_readings_channel(const char* filepath, MeterReadingsChannel* channel)
-{
-    FILE* f = fopen(filepath, "r");
-    if ( f == NULL ) {
-        return 0;
-    }
-    channel->channel_file = f;
-
-    return 1; 
-}
-
-
-int fetch_next_channel_state(MeterReadingsChannel* channel, ChannelState* state)
-{
-    int result = fscanf(channel->channel_file, "%i %i", &state->time_stamp, &state->state);
-    if ( result != 2 ) {
-        return 0;
-    }
     return 1;
 }
 
