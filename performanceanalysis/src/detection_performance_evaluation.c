@@ -2,7 +2,7 @@
 #include "file_loader.h"
 #include "smart_meter_channels.h"
 
-#include "data_loader_config.h"
+#include "performance_analysis_config.h"
 
 #include "analyze.h"
 
@@ -42,10 +42,10 @@ int analyze_algorithm_performance(const char *path_to_sound_file, const char *pa
 
 
 static int do_measurements(Calibration* calib, UkDaleFile* file,ChannelProgress* progress ) {
-    float amps[DATA_LOADER_DATA_BUFFER_LEN];
-    float volts[DATA_LOADER_DATA_BUFFER_LEN];
+    float amps[PERFORMANCE_ANALYSIS_DATA_BUFFER_LEN];
+    float volts[PERFORMANCE_ANALYSIS_DATA_BUFFER_LEN];
 
-    printf("Evaluating %d values each second:\n\n", DATA_LOADER_DATA_BUFFER_LEN);
+    printf("Evaluating %d values each second:\n\n", PERFORMANCE_ANALYSIS_DATA_BUFFER_LEN);
 
 
     clock_t start_time = clock();
@@ -54,7 +54,7 @@ static int do_measurements(Calibration* calib, UkDaleFile* file,ChannelProgress*
     int counter = 0;
 
     int t0 = 1363392000;
- int offset = 0;
+    int offset = 0;
     for(; counter < 60; ++counter) {
 
         fetch_states_after_time(progress, t0);
@@ -63,12 +63,11 @@ static int do_measurements(Calibration* calib, UkDaleFile* file,ChannelProgress*
         ++t0;
 
         fflush(stdout);
-        offset = read_uk_dale_to_ring_buffer(file, calib,volts,amps,DATA_LOADER_DATA_BUFFER_LEN, DATA_LOADER_DATA_BUFFER_LEN / 2, offset);
+        offset = read_uk_dale_to_ring_buffer(file, calib,volts,amps,PERFORMANCE_ANALYSIS_DATA_BUFFER_LEN, PERFORMANCE_ANALYSIS_DATA_BUFFER_LEN / 2, offset);
         if(offset == -1) {
             printf("Can not read any more data from the sound file.");
         }
         start_time = clock();
-        naive_event_processing(volts, amps, DATA_LOADER_DATA_BUFFER_LEN);
         time_taken += clock() - start_time;
     }
 

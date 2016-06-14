@@ -10,23 +10,27 @@ extern "C" {
 
 #include "libanalyze_config.h"
 
-int naive_event_processing(float* voltage, float* current, int num_data_points) {
+int analyze(float* voltage, float* current, int buffer_size, int bytes_to_analyze, int offset) {
+    static int prev_event = -1;
+    static int prev_max = 0;
+
     int counter = 0;
-    static float sum = 0;
 
-    float current_sum = 0;
+    if(prev_event!= -1) {
+        // analyze event which needed some more buffering
+    }
+    int time_since_prev_max;
+    for(; counter < bytes_to_analyze; ++counter) {
+        if(prev_max < current[(counter+offset) % buffer_size]) {
+            int diff =  current[(counter+offset) % buffer_size] - prev_max;
+            if(diff > CURRENT_DIFFERENCE_EVENT_TRIGGER ) {
 
+            }
+        }
+        ++time_since_prev_max;
 
-    for(; counter < num_data_points; ++counter) {
-        current_sum  += voltage[counter] * current[counter];
 
     }
-
-    printf("old watt: %f  current watt: %f\n", sum / num_data_points, current_sum / num_data_points);
-
-    sum = current_sum;
-
-    return 1;
 }
 
 #if defined(__cplusplus)
