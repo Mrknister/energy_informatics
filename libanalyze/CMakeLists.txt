@@ -6,14 +6,31 @@ project (analyze)
 set (PROJECT_INCLUDE_DIR ${PROJECT_SOURCE_DIR}/src)
 
 
-include_directories("${PROJECT_INCLUDE_DIR}")
 
- 
+
+
+FILE(GLOB_RECURSE LibFiles "${PROJECT_INCLUDE_DIR}/*.h")
+configure_file(${PROJECT_SOURCE_DIR}/libanalyze_config.h.in libanalyze_config.h)
+
+FILE(GLOB_RECURSE LibFiles "${PROJECT_INCLUDE_DIR}/*.h")
+
+set(LibFiles ${LibFiles} ${PROJECT_BINARY_DIR}/libanalyze_config.h})
+
 add_library(${PROJECT_NAME} INTERFACE)
+target_include_directories(${PROJECT_NAME} INTERFACE "${PROJECT_INCLUDE_DIR}")
+target_include_directories(${PROJECT_NAME} INTERFACE "${PROJECT_BINARY_DIR}")
 
-target_include_directories(${PROJECT_NAME} INTERFACE
-  ${PROJECT_INCLUDE_DIR}
-)
+set(DATA_POINTS_PER_FEATURE 8000)
+
+
 
 install(TARGETS ${PROJECT_NAME}
-        PUBLIC_HEADER DESTINATION inc)
+        INCLUDES DESTINATION include/
+        ARCHIVE DESTINATION lib/
+)
+
+install(FILES
+        ${LibFiles}
+      DESTINATION include/
+    )
+

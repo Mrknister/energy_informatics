@@ -1,0 +1,13 @@
+#ifndef __LIBANALYZE_CONFIG__
+#define __LIBANALYZE_CONFIG__
+
+
+#if defined(__cplusplus)
+extern "C" {
+#endif
+#define DATA_POINTS_PER_FEATURE ${DATA_POINTS_PER_FEATURE}
+#if defined(__cplusplus)
+} /* extern "C" */
+#endif
+
+#endif

@@ -9,6 +9,9 @@ set(CMAKE_BUILD_TYPE DEBUG)
 set(CMAKE_C_FLAGS "-O0 -ggdb")
 set(CMAKE_C_FLAGS_DEBUG "-O0 -ggdb -Wall")
 
+add_custom_target(doc)
+
 add_subdirectory("${CMAKE_SOURCE_DIR}/libanalyze")
 add_subdirectory("${CMAKE_SOURCE_DIR}/dataloader")
+add_subdirectory("${CMAKE_SOURCE_DIR}/performanceanalysis")
 
