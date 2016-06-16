@@ -1,3 +1,6 @@
+
+#include <time.h>
+
 #include "file_config_loader.h"
 #include "file_loader.h"
 #include "smart_meter_channels.h"
@@ -5,8 +8,6 @@
 #include "performance_analysis_config.h"
 
 #include "analyze.h"
-
-#include <time.h>
 
 static int do_measurements(Calibration* calib, UkDaleFile* file,ChannelProgress* progress );
 
@@ -36,8 +37,6 @@ int analyze_algorithm_performance(const char *path_to_sound_file, const char *pa
     close_uk_dale_file(&file);
 
     return success;
-
-
 }
 
 
@@ -70,10 +69,9 @@ static int do_measurements(Calibration* calib, UkDaleFile* file,ChannelProgress*
         start_time = clock();
         time_taken += clock() - start_time;
     }
-
-
     printf("total clocks since start of event evaluation: %li\n", time_taken);
     return 1;
-
-
 }
+
+
+
