@@ -25,6 +25,8 @@ void test_channels() {
 
 int main(int argc, char** argv)
 {
+    printf("%i", -1 % 50);
+    return 0;
     test_channels();
     return 0;
     if (argc < 3) {

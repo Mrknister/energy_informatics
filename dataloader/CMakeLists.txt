@@ -39,7 +39,7 @@ set(DATALOADER_SRCS
     )
 
 
-set(DATA_LOADER_FILE_BUFFER_LEN 2056)
+set(DATA_LOADER_FILE_BUFFER_LEN 2048)
 configure_file(data_loader_config.h.in data_loader_config.h)
 
 

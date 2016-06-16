@@ -12,26 +12,42 @@ extern "C" {
 #include "libanalyze_config.h"
 #include "mean_square_root_feature.h"
 
-int analyze(float* voltage, float* current, int buffer_size, int bytes_to_analyze, int offset) {
-    static int prev_event = -1;
-    static int prev_max = 0;
+
+
+float establish_current_amplitude(float* buffer, int buffer_size, int offset)
+{
+    float max = -123456678.0;
+    int counter = 0;
+    for (; counter < DATA_POINTS_PER_WAVE_LENGTH; ++counter) {
+        if (buffer[(counter + offset) % buffer_size] > max) {
+            max = buffer[(counter + offset) % buffer_size];
+        }
+    }
+
+    return max;
+}
+
+int analyze(float* voltage, float* current, int buffer_size, int bytes_to_analyze, int offset)
+{
+    static float prev_max = -1234523456345;
 
     int counter = 0;
 
-    if(prev_event != -1) {
-        // analyze event which needed some more buffering
+    if (prev_max == -1234523456345) {
+        prev_max = establish_current_amplitude(current, buffer_size, offset);
     }
-    int time_since_prev_max;
-    for(; counter < bytes_to_analyze; ++counter) {
-        if(prev_max < current[(counter+offset) % buffer_size]) {
-            int diff =  current[(counter+offset) % buffer_size] - prev_max;
-            if(diff > CURRENT_DIFFERENCE_EVENT_TRIGGER ) {
-                // trigger event
-            }
+
+    for (; counter < bytes_to_analyze - DATA_POINTS_PER_WAVE_LENGTH; counter += DATA_POINTS_PER_WAVE_LENGTH) {
+
+        float current_amplitude = establish_current_amplitude(current, buffer_size, counter + offset);
+
+        if (prev_max < current_amplitude - CURRENT_DIFFERENCE_EVENT_TRIGGER) {
+            return counter + offset % buffer_size;
         }
-        ++time_since_prev_max;
+        prev_max = current_amplitude;
     }
-    return 0;
+
+    return -1;
 }
 
 

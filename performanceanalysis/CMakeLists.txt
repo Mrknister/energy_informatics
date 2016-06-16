@@ -36,7 +36,7 @@ add_dependencies(doc performanceanalysis_doc)
 # add ini file parser 
 
 
-set(PERFORMANCE_ANALYSIS_DATA_BUFFER_LEN 16000)
+set(PERFORMANCE_ANALYSIS_DATA_BUFFER_LEN 32000)
 configure_file(performance_analysis_config.h.in performance_analysis_config.h)
 
 
