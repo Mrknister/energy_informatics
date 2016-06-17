@@ -12,10 +12,17 @@ set(CURRENT_DIFFERENCE_EVENT_TRIGGER 0.1)
 configure_file(${PROJECT_SOURCE_DIR}/libanalyze_config.h.in libanalyze_config.h)
 
 
+
 add_library(${PROJECT_NAME} INTERFACE)
 target_include_directories(${PROJECT_NAME} INTERFACE "${PROJECT_INCLUDE_DIR}")
 target_include_directories(${PROJECT_NAME} INTERFACE "${PROJECT_BINARY_DIR}")
 
+
+# add kiss_fft
+add_library(kiss_fft ${EXTERNAL_DEPENDENCIES_DIR}/kiss_fft/kiss_fft.c)
+target_include_directories(kiss_fft PUBLIC ${EXTERNAL_DEPENDENCIES_DIR}/kiss_fft/ BEFORE)
+target_include_directories(${PROJECT_NAME}  INTERFACE ${EXTERNAL_DEPENDENCIES_DIR}/kiss_fft/ BEFORE)
+target_link_libraries(${PROJECT_NAME} INTERFACE kiss_fft)
 
 
 install(TARGETS ${PROJECT_NAME}

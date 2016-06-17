@@ -66,7 +66,7 @@ static int do_measurements(Calibration* calib, UkDaleFile* file, ChannelProgress
     for (; counter < 60; ++counter) {
 
         fetch_states_after_time(progress, t0);
-        print_channel_changes(progress);
+        //print_channel_changes(progress);
         adopt_channel_changes(progress);
         ++t0;
 
@@ -76,10 +76,15 @@ static int do_measurements(Calibration* calib, UkDaleFile* file, ChannelProgress
             printf("Can not read any more data from the sound file.");
         }
         start_time = clock();
-        analyze(volts, amps, PERFORMANCE_ANALYSIS_DATA_BUFFER_LEN, PERFORMANCE_ANALYSIS_DATA_BUFFER_LEN / 2, offset);
+        int event = analyze(volts, amps, PERFORMANCE_ANALYSIS_DATA_BUFFER_LEN, PERFORMANCE_ANALYSIS_DATA_BUFFER_LEN / 2, offset);
+        if(event >=0 ) {
+            printf("Detected an event at %i", event);
+            FastFourierFeature feature;
+            fast_fourier_transform(&feature,volts, amps, PERFORMANCE_ANALYSIS_DATA_BUFFER_LEN, event);
+        }
         time_taken += clock() - start_time;
         offset = next_offset;
-        //printf("\n\n\n\n\n\n");
+        printf("\n_________\n");
         //print_buffer(amps, ", ", PERFORMANCE_ANALYSIS_DATA_BUFFER_LEN);
         //       printf("\n\n\n\n\n\n");
 
