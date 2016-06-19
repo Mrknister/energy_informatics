@@ -9,6 +9,8 @@
 
 #include "analyze.h"
 
+#include "save_data.h"
+
 static int do_measurements(Calibration* calib, UkDaleFile* file, ChannelProgress* progress);
 
 int analyze_algorithm_performance(const char* path_to_sound_file, const char* path_to_calibration_file, const char* path_to_channel_folder)
@@ -63,7 +65,8 @@ static int do_measurements(Calibration* calib, UkDaleFile* file, ChannelProgress
     int t0 = 1363392000;
     int next_offset = 0;
     int offset = 0;
-    for (; counter < 60; ++counter) {
+    int event = -1;
+    for (; counter < 6000; ++counter) {
 
         fetch_states_after_time(progress, t0);
         //print_channel_changes(progress);
@@ -71,23 +74,24 @@ static int do_measurements(Calibration* calib, UkDaleFile* file, ChannelProgress
         ++t0;
 
         fflush(stdout);
+        
         next_offset = read_uk_dale_to_ring_buffer(file, calib, volts, amps, PERFORMANCE_ANALYSIS_DATA_BUFFER_LEN, PERFORMANCE_ANALYSIS_DATA_BUFFER_LEN / 2, next_offset);
         if (next_offset == -1) {
-            printf("Can not read any more data from the sound file.");
+            printf("Can not read any more data from the sound file. After %i ticks\n", counter);
+            return -1;
         }
-        start_time = clock();
-        int event = analyze(volts, amps, PERFORMANCE_ANALYSIS_DATA_BUFFER_LEN, PERFORMANCE_ANALYSIS_DATA_BUFFER_LEN / 2, offset);
+        // we check if the event happened here because we want to buffer the next data to make sure that there is enough data in the buffer
         if(event >=0 ) {
-            printf("Detected an event at %i", event);
+            printf("Event at tick %i\n", counter);
+            log_event("", t0, amps, PERFORMANCE_ANALYSIS_DATA_BUFFER_LEN, DATA_POINTS_PER_FEATURE, event - DATA_POINTS_PER_WAVE_LENGTH);
             FastFourierFeature feature;
             fast_fourier_transform(&feature,volts, amps, PERFORMANCE_ANALYSIS_DATA_BUFFER_LEN, event);
         }
+        
+        start_time = clock();
+        event = analyze(volts, amps, PERFORMANCE_ANALYSIS_DATA_BUFFER_LEN, PERFORMANCE_ANALYSIS_DATA_BUFFER_LEN / 2, offset);
         time_taken += clock() - start_time;
         offset = next_offset;
-        printf("\n_________\n");
-        //print_buffer(amps, ", ", PERFORMANCE_ANALYSIS_DATA_BUFFER_LEN);
-        //       printf("\n\n\n\n\n\n");
-
     }
 
     printf("total clocks since start of event evaluation: %li\n", time_taken);

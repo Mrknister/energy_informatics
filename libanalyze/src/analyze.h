@@ -7,7 +7,7 @@ extern "C" {
     
 #include "event_detection.h"
 #include "fft_feature.h"
-#include "mean_square_root_feature.h"
+#include "root_mean_square_feature.h"
     
 #if defined(__cplusplus)
 } /* extern "C" */

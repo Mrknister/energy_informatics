@@ -18,8 +18,6 @@ int fast_fourier_transform(FastFourierFeature* feature,  float voltage[], float 
     size_t lenmem = 1024 + sizeof(FastFourierFeature);
     char cfg_buffer[lenmem];
     kiss_fft_cfg cfg =  kiss_fft_alloc(DATA_POINTS_PER_FEATURE,0,(void *) cfg_buffer,&lenmem); 
-
-    
     
     
     int counter = 0;

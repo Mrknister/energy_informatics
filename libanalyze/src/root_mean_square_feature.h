@@ -13,8 +13,16 @@ typedef struct {
     float data[ANALYZED_FEATURES_PER_WAVE];
 } MeanSquareRootFeature;
 
+float root_mean_square(float voltage[], float current[], int buffer_size, int offset) {
+    float result = 0;
+    int byte_counter = 0;
+    for(; byte_counter < DATA_POINTS_PER_WAVE_LENGTH; ++ byte_counter) {
+        result += current[(byte_counter + offset) % buffer_size] * current[(byte_counter + offset) % buffer_size];
+    }
+    return sqrt(result / DATA_POINTS_PER_WAVE_LENGTH);
+}
 
-int mean_square_root(MeanSquareRootFeature* feature, float voltage[], float current[], int buffer_size, int offset)
+int root_mean_square_feature(MeanSquareRootFeature* feature, float voltage[], float current[], int buffer_size, int offset)
 {
 
     int msq_counter = 0;

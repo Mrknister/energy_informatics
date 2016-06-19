@@ -8,6 +8,7 @@ set (PROJECT_SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/src)
 set(PERFORMANCEANALYSIS_SRCS
 ${PROJECT_SOURCE_DIR}/main.c
 ${PROJECT_SOURCE_DIR}/detection_performance_evaluation.c
+${PROJECT_SOURCE_DIR}/save_data.c
 )
 
 find_package(Doxygen)
