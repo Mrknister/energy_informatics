@@ -9,7 +9,7 @@ extern "C" {
 
 #include <sndfile.h>
 #include "file_config_loader.h"
-    
+
 
 
 /**
@@ -40,7 +40,7 @@ int open_uk_dale_file(const char* fname, UkDaleFile* file);
  * @param bytes_read The number of values that will be read from the buffer.
  * @returns the new offset on success, -1 on failure.
  */
-int read_uk_dale_to_ring_buffer(UkDaleFile* file, Calibration* calib,float* voltage, float* current, int buffer_length, int bytes_read, int offset);
+int read_uk_dale_to_ring_buffer(UkDaleFile* file, Calibration* calib, float* voltage, float* current, int buffer_length, int bytes_read, int offset);
 
 /**
  * @brief close_uk_dale_file closes the file.

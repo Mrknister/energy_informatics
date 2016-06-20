@@ -43,16 +43,16 @@ static int file_ok(SF_INFO* file_info, SNDFILE* file)
 int read_uk_dale_to_ring_buffer(UkDaleFile* file, Calibration* calib, float* voltage, float* current, int buffer_length, int bytes_read, int offset)
 {
     float buffer[DATA_LOADER_FILE_BUFFER_LEN];
-    
+
     int read_frames = DATA_LOADER_FILE_BUFFER_LEN / 2 > bytes_read ? bytes_read : DATA_LOADER_FILE_BUFFER_LEN / 2;
 
     int total_count = 0;
     float voltage_multiplyer = calib->volts_per_adc_step * calib->number_of_adc_steps;
     float amp_multiplyer = calib->amps_per_adc_step * calib->number_of_adc_steps;
 
-    
+
     do {
-        if( read_frames > bytes_read - total_count) {
+        if (read_frames > bytes_read - total_count) {
             read_frames = bytes_read - total_count;
         }
         sf_count_t count = sf_readf_float(file->snd_file, buffer, read_frames);
@@ -61,15 +61,15 @@ int read_uk_dale_to_ring_buffer(UkDaleFile* file, Calibration* calib, float* vol
         }
 
         int buffer_count = 0;
-        
-        for (; buffer_count < read_frames*2; ++buffer_count) {
-            voltage[(total_count+offset) % buffer_length] = buffer[buffer_count] * voltage_multiplyer;
+
+        for (; buffer_count < read_frames * 2; ++buffer_count) {
+            voltage[(total_count + offset) % buffer_length] = buffer[buffer_count] * voltage_multiplyer;
             ++buffer_count;
-            current[(total_count+offset) % buffer_length] = buffer[buffer_count] * amp_multiplyer;
-            
+            current[(total_count + offset) % buffer_length] = buffer[buffer_count] * amp_multiplyer;
+
             ++total_count;
-            
-            if( total_count >= bytes_read ) {
+
+            if (total_count >= bytes_read) {
                 return (total_count + offset) % buffer_length;
             }
         }

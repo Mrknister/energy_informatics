@@ -62,7 +62,7 @@ int close_meter_readings_channel(MeterReadingsChannel* channel);
  * @param channels a pointer to a pointer in which the allocated array will be stored.
  * @return
  */
-int open_all_channels_in_folder(const char *path, MeterReadingsChannel** channels);
+int open_all_channels_in_folder(const char* path, MeterReadingsChannel** channels);
 
 int init_channel_progress(const char* path, ChannelProgress* to_initialize);
 

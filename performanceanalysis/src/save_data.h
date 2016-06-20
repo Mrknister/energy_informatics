@@ -10,6 +10,7 @@
 int save_float_array(const char* file_name, float* buffer, int buffer_size, int num_data, int offset);
 
 int log_event(const char* log_folder, int event_time, float* buffer, int buffer_size, int num_data, int event_pos);
+int log_rms_feature(const char* log_folder, int event_time, RootMeanSquareFeature* feature);
 
 
 #if defined(__cplusplus)

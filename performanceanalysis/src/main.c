@@ -3,7 +3,8 @@
 
 #include "detection_performance_evaluation.h"
 
-void print_usage() {
+void print_usage()
+{
     printf("usage: data_loader <path_to_sound_file> <path_to_calibration> <path_to_channel_folder>\n");
 }
 

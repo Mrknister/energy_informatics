@@ -25,7 +25,7 @@ int buffer_offset = 0;
 static void reset_timer();
 static void pause_timer();
 static void resume_timer();
-static int do_event_evaluation(int event);
+static int do_event_evaluation(int event, int event_time);
 static int evaluate_once(int* second_time_stamp, UkDaleFile* file, Calibration* calib);
 
 
@@ -122,26 +122,32 @@ static int evaluate_once(int* second_time_stamp, UkDaleFile* file, Calibration* 
             return -1;
         }
 
-        printf("Event at second %i\n", *second_time_stamp);
-        const int data_points_logged =  DATA_POINTS_PER_FEATURE + DATA_POINTS_PER_WAVE_LENGTH;
-        const int log_start = event - DATA_POINTS_PER_WAVE_LENGTH;
-        log_event("", *second_time_stamp, amps, PERFORMANCE_ANALYSIS_DATA_BUFFER_LEN, data_points_logged, log_start);
-
         if (buffer_offset % 16000 == 0) {
             ++(*second_time_stamp);
         }
 
-        return do_event_evaluation(event);
+        return do_event_evaluation(event, *second_time_stamp);
     }
     return 1;
 }
 
-static int do_event_evaluation(int event)
+static int do_event_evaluation(int event, int event_time)
 {
+    printf("Event at second %i\n", event_time);
+
     resume_timer();
-    FastFourierFeature feature;
-    fast_fourier_transform(&feature, volts, amps, PERFORMANCE_ANALYSIS_DATA_BUFFER_LEN, event);
+    FastFourierFeature fft_feature;
+    fast_fourier_transform(&fft_feature, volts, amps, PERFORMANCE_ANALYSIS_DATA_BUFFER_LEN, event);
+    RootMeanSquareFeature rms_feature;
+    root_mean_square_feature(&rms_feature, volts, amps, PERFORMANCE_ANALYSIS_DATA_BUFFER_LEN, event);
     pause_timer();
+
+    const int data_points_logged =  DATA_POINTS_PER_FEATURE + DATA_POINTS_PER_WAVE_LENGTH;
+    const int log_start = event - DATA_POINTS_PER_WAVE_LENGTH;
+
+    log_event("", event_time, amps, PERFORMANCE_ANALYSIS_DATA_BUFFER_LEN, data_points_logged, log_start);
+
+    log_rms_feature("", event_time, &rms_feature);
 
     return 0;
 }

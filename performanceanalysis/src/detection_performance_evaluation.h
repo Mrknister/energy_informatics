@@ -4,7 +4,7 @@
 extern "C" {
 #endif
 
-int analyze_algorithm_performance(const char * path_to_sound_file, const char* path_to_calibration_file, const char* path_to_channel_folder);
+int analyze_algorithm_performance(const char* path_to_sound_file, const char* path_to_calibration_file, const char* path_to_channel_folder);
 
 #if defined(__cplusplus)
 } /* extern "C" */
