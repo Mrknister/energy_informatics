@@ -5,9 +5,9 @@ extern "C" {
 
 #include "fft_feature.h"
 
-int fast_fourier_transform(FastFourierFeature* feature,  float voltage[], float current[], int buffer_size, int offset)
+int fast_fourier_transform(FastFourierFeature* feature, float buffer[], int buffer_size, int offset)
 {
-    kiss_fft_cpx buffer[DATA_POINTS_PER_FEATURE];
+    kiss_fft_cpx kiss_fft_buffer[DATA_POINTS_PER_FEATURE];
     size_t lenmem = 1024 + sizeof(FastFourierFeature);
     char cfg_buffer[lenmem];
     kiss_fft_cfg cfg =  kiss_fft_alloc(DATA_POINTS_PER_FEATURE, 0, (void*) cfg_buffer, &lenmem);
@@ -15,11 +15,11 @@ int fast_fourier_transform(FastFourierFeature* feature,  float voltage[], float 
 
     int counter = 0;
     for (; counter < DATA_POINTS_PER_FEATURE; ++counter) {
-        buffer[counter].i = 0;
-        buffer[counter].r = current[(counter + offset) % buffer_size];
+        kiss_fft_buffer[counter].i = 0;
+        kiss_fft_buffer[counter].r = buffer[(counter + offset) % buffer_size];
     }
 
-    kiss_fft(cfg, buffer, feature->data);
+    kiss_fft(cfg, kiss_fft_buffer, feature->data);
 
     return 1;
 }

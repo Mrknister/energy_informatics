@@ -12,7 +12,7 @@ typedef struct {
     kiss_fft_cpx data[DATA_POINTS_PER_FEATURE];
 } FastFourierFeature;
 
-int fast_fourier_transform(FastFourierFeature* feature,  float voltage[], float current[], int buffer_size, int offset);
+int fast_fourier_transform(FastFourierFeature* feature,  float buffer[], int buffer_size, int offset);
 
 
 #if defined(__cplusplus)

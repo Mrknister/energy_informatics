@@ -137,7 +137,7 @@ static int do_event_evaluation(int event, int event_time)
 
     resume_timer();
     FastFourierFeature fft_feature;
-    fast_fourier_transform(&fft_feature, volts, amps, PERFORMANCE_ANALYSIS_DATA_BUFFER_LEN, event);
+    fast_fourier_transform(&fft_feature, amps, PERFORMANCE_ANALYSIS_DATA_BUFFER_LEN, event);
     RootMeanSquareFeature rms_feature;
     root_mean_square_feature(&rms_feature, volts, amps, PERFORMANCE_ANALYSIS_DATA_BUFFER_LEN, event);
     pause_timer();
@@ -148,6 +148,7 @@ static int do_event_evaluation(int event, int event_time)
     log_event("", event_time, amps, PERFORMANCE_ANALYSIS_DATA_BUFFER_LEN, data_points_logged, log_start);
 
     log_rms_feature("", event_time, &rms_feature);
+    log_fft_feature("", event_time, &fft_feature);
 
     return 0;
 }
