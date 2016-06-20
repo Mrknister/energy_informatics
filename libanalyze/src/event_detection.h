@@ -41,12 +41,11 @@ int analyze(float* voltage, float* current, int buffer_size, int bytes_to_analyz
         float current_rms = root_mean_square(voltage, current, buffer_size, counter + offset);
 
         if (prev_rms < current_rms - CURRENT_DIFFERENCE_EVENT_TRIGGER) {
-            printf("old rms: %f current rms: %f, buffer_pos: %i\n", prev_rms,current_rms, (counter + offset) % buffer_size);
             prev_rms = current_rms ;
             return (counter + offset) % buffer_size;
         }
 
-        prev_rms = current_rms * 0.1 + prev_rms * 0.9;
+        prev_rms = current_rms * 0.2 + prev_rms * 0.8;
     }
 
     return -1;

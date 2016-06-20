@@ -13,6 +13,23 @@
 
 static int do_measurements(Calibration* calib, UkDaleFile* file, ChannelProgress* progress);
 
+static clock_t time_elapsed, start_time;
+
+
+float amps[PERFORMANCE_ANALYSIS_DATA_BUFFER_LEN];
+float volts[PERFORMANCE_ANALYSIS_DATA_BUFFER_LEN];
+int buffer_offset = 0;
+
+
+
+static void reset_timer();
+static void pause_timer();
+static void resume_timer();
+static int do_event_evaluation(int event);
+static int evaluate_once(int* second_time_stamp, UkDaleFile* file, Calibration* calib);
+
+
+
 int analyze_algorithm_performance(const char* path_to_sound_file, const char* path_to_calibration_file, const char* path_to_channel_folder)
 {
     Calibration calib;
@@ -40,6 +57,7 @@ int analyze_algorithm_performance(const char* path_to_sound_file, const char* pa
 
     return success;
 }
+
 void print_buffer(float* buffer, const char* intersect, int num_vals)
 {
     int counter = 0;
@@ -51,52 +69,97 @@ void print_buffer(float* buffer, const char* intersect, int num_vals)
 
 static int do_measurements(Calibration* calib, UkDaleFile* file, ChannelProgress* progress)
 {
-    float amps[PERFORMANCE_ANALYSIS_DATA_BUFFER_LEN];
-    float volts[PERFORMANCE_ANALYSIS_DATA_BUFFER_LEN];
+
 
     printf("Evaluating %d values each second:\n\n", PERFORMANCE_ANALYSIS_DATA_BUFFER_LEN / 2);
 
 
-    clock_t start_time = clock();
-    clock_t time_taken = 0;
-
     int counter = 0;
-
     int t0 = 1363392000;
-    int next_offset = 0;
-    int offset = 0;
-    int event = -1;
-    for (; counter < 6000; ++counter) {
+    int t = t0;
 
-        fetch_states_after_time(progress, t0);
-        //print_channel_changes(progress);
-        adopt_channel_changes(progress);
-        ++t0;
+    reset_timer();
 
+    for (; evaluate_once(&t, file, calib) != -1; ++counter) {
         fflush(stdout);
-        
-        next_offset = read_uk_dale_to_ring_buffer(file, calib, volts, amps, PERFORMANCE_ANALYSIS_DATA_BUFFER_LEN, PERFORMANCE_ANALYSIS_DATA_BUFFER_LEN / 2, next_offset);
-        if (next_offset == -1) {
-            printf("Can not read any more data from the sound file. After %i ticks\n", counter);
-            return -1;
-        }
-        // we check if the event happened here because we want to buffer the next data to make sure that there is enough data in the buffer
-        if(event >=0 ) {
-            printf("Event at tick %i\n", counter);
-            log_event("", t0, amps, PERFORMANCE_ANALYSIS_DATA_BUFFER_LEN, DATA_POINTS_PER_FEATURE, event - DATA_POINTS_PER_WAVE_LENGTH);
-            FastFourierFeature feature;
-            fast_fourier_transform(&feature,volts, amps, PERFORMANCE_ANALYSIS_DATA_BUFFER_LEN, event);
-        }
-        
-        start_time = clock();
-        event = analyze(volts, amps, PERFORMANCE_ANALYSIS_DATA_BUFFER_LEN, PERFORMANCE_ANALYSIS_DATA_BUFFER_LEN / 2, offset);
-        time_taken += clock() - start_time;
-        offset = next_offset;
     }
 
-    printf("total clocks since start of event evaluation: %li\n", time_taken);
+    printf("total clocks since start of event evaluation: %li at %li clock per second. This means we need %li clocks every second.\n", time_elapsed, CLOCKS_PER_SEC, time_elapsed / (t - t0));
     return 1;
 }
 
+static int evaluate_once(int* second_time_stamp, UkDaleFile* file, Calibration* calib)
+{
+    static int time_offset_counter = 0;
+
+
+    const int read_data = PERFORMANCE_ANALYSIS_DATA_BUFFER_LEN / 4;
+    int next_offset =  read_uk_dale_to_ring_buffer(file, calib, volts, amps, PERFORMANCE_ANALYSIS_DATA_BUFFER_LEN, read_data, buffer_offset);
+    if (next_offset == -1) {
+        return -1;
+    }
+
+    time_offset_counter += next_offset;
+
+    if (time_offset_counter > 16000) {
+        time_offset_counter -= 16000;
+        ++(*second_time_stamp);
+    }
+
+
+
+    resume_timer();
+    int event = analyze(volts, amps, PERFORMANCE_ANALYSIS_DATA_BUFFER_LEN, read_data, buffer_offset);
+    pause_timer();
+
+
+
+    if (event != -1) {
+        buffer_offset = read_uk_dale_to_ring_buffer(file, calib, volts, amps, PERFORMANCE_ANALYSIS_DATA_BUFFER_LEN, read_data, next_offset);
+        time_offset_counter += buffer_offset;
+
+        if (buffer_offset == -1) {
+            return -1;
+        }
+
+        printf("Event at second %i\n", *second_time_stamp);
+        const int data_points_logged =  DATA_POINTS_PER_FEATURE + DATA_POINTS_PER_WAVE_LENGTH;
+        const int log_start = event - DATA_POINTS_PER_WAVE_LENGTH;
+        log_event("", *second_time_stamp, amps, PERFORMANCE_ANALYSIS_DATA_BUFFER_LEN, data_points_logged, log_start);
+
+        if (buffer_offset % 16000 == 0) {
+            ++(*second_time_stamp);
+        }
+
+        return do_event_evaluation(event);
+    }
+    return 1;
+}
+
+static int do_event_evaluation(int event)
+{
+    resume_timer();
+    FastFourierFeature feature;
+    fast_fourier_transform(&feature, volts, amps, PERFORMANCE_ANALYSIS_DATA_BUFFER_LEN, event);
+    pause_timer();
+
+    return 0;
+}
+
+static void reset_timer()
+{
+    time_elapsed = 0;
+    start_time = clock();
+}
+
+static void pause_timer()
+{
+    time_elapsed += clock() - start_time;
+}
+
+void resume_timer()
+{
+    start_time = clock();
+}
 
 

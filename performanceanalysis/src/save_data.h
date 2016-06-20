@@ -5,6 +5,7 @@
 #if defined(__cplusplus)
 //extern "C" {
 #endif
+#include "analyze.h"
 
 int save_float_array(const char* file_name, float* buffer, int buffer_size, int num_data, int offset);
 
