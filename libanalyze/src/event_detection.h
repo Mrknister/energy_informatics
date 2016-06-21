@@ -29,7 +29,9 @@ float establish_current_amplitude(float* buffer, int buffer_size, int offset);
  * 
  * If you wish to lower the threshold you can do that by passing the CURRENT_DIFFERENCE_EVENT_TRIGGER argument to cmake.
  * 
- * Example: cmake .. -DCURRENT_DIFFERENCE_EVENT_TRIGGER=0.1
+ * Example: 
+ * 
+ * cmake .. -DCURRENT_DIFFERENCE_EVENT_TRIGGER=0.1
  * 
  */
 int detect_event(float* voltage, float* current, int buffer_size, int data_points_to_analyze, int offset);
