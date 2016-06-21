@@ -20,7 +20,7 @@ float establish_current_amplitude(float* buffer, int buffer_size, int offset)
     return max;
 }
 
-int analyze(float* voltage, float* current, int buffer_size, int bytes_to_analyze, int offset)
+int detect_event(float* voltage, float* current, int buffer_size, int bytes_to_analyze, int offset)
 {
     static float prev_rms = -1234523456345;
 

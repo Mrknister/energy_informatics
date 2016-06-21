@@ -109,7 +109,7 @@ static int evaluate_once(int* second_time_stamp, UkDaleFile* file, Calibration* 
 
 
     resume_timer();
-    int event = analyze(volts, amps, PERFORMANCE_ANALYSIS_DATA_BUFFER_LEN, read_data, buffer_offset);
+    int event = detect_event(volts, amps, PERFORMANCE_ANALYSIS_DATA_BUFFER_LEN, read_data, buffer_offset);
     pause_timer();
 
 
