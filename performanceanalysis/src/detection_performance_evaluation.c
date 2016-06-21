@@ -84,7 +84,7 @@ static int do_measurements(Calibration* calib, UkDaleFile* file, ChannelProgress
         fflush(stdout);
     }
 
-    printf("total clocks since start of event evaluation: %li at %li clock per second. This means we need %li clocks every second.\n", time_elapsed, CLOCKS_PER_SEC, time_elapsed / (t - t0));
+    printf("total clocks since start of event evaluation: %li at %li clock per second. \n", time_elapsed, CLOCKS_PER_SEC);
     return 1;
 }
 
