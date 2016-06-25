@@ -58,19 +58,13 @@ int analyze_algorithm_performance(const char* path_to_sound_file, const char* pa
     return success;
 }
 
-void print_buffer(float* buffer, const char* intersect, int num_vals)
-{
-    int counter = 0;
-    for (; counter < num_vals - 1; ++counter) {
-        printf("%f%s", buffer[counter], intersect);
-    }
-    printf("%f", buffer[counter]);
-}
-
+/**
+ * @brief Evaluates one hour of power data. It sums the time used to do the calculations without loading the sound file.
+ * 
+ * 
+ */
 static int do_measurements(Calibration* calib, UkDaleFile* file, ChannelProgress* progress)
 {
-
-
     printf("Evaluating %d values each second:\n\n", PERFORMANCE_ANALYSIS_DATA_BUFFER_LEN / 2);
 
 
@@ -84,10 +78,16 @@ static int do_measurements(Calibration* calib, UkDaleFile* file, ChannelProgress
         fflush(stdout);
     }
 
-    printf("total clocks since start of event evaluation: %li at %li clock per second. \n", time_elapsed, CLOCKS_PER_SEC);
+    printf("total clocks since start of event evaluation: %li at %li clock per second. In total we need %li clocks to evaluate a second\n", time_elapsed, CLOCKS_PER_SEC, time_elapsed/(t-t0));
     return 1;
 }
 
+/**
+ * @brief Detects events within one second at most. 
+ * 
+ * We dont specify how much time we need exactly because when an event is detected we buffer another half a second to make sure that there is enough data to analyze an event.
+ * When one second passes we will increase the time stamp variable.
+ */
 static int evaluate_once(int* second_time_stamp, UkDaleFile* file, Calibration* calib)
 {
     static int time_offset_counter = 0;
@@ -101,6 +101,7 @@ static int evaluate_once(int* second_time_stamp, UkDaleFile* file, Calibration* 
 
     time_offset_counter += next_offset;
 
+    // If we passed a second, increase the time stamp
     if (time_offset_counter > 16000) {
         time_offset_counter -= 16000;
         ++(*second_time_stamp);
@@ -113,19 +114,15 @@ static int evaluate_once(int* second_time_stamp, UkDaleFile* file, Calibration* 
     pause_timer();
 
 
-
+    //An event was detected. Now we will analyze features on this event and also log some data.
     if (event != -1) {
+        
         buffer_offset = read_uk_dale_to_ring_buffer(file, calib, volts, amps, PERFORMANCE_ANALYSIS_DATA_BUFFER_LEN, read_data, next_offset);
         time_offset_counter += buffer_offset;
 
         if (buffer_offset == -1) {
             return -1;
         }
-
-        if (buffer_offset % 16000 == 0) {
-            ++(*second_time_stamp);
-        }
-
         return do_event_evaluation(event, *second_time_stamp);
     }
     return 1;
@@ -135,13 +132,16 @@ static int do_event_evaluation(int event, int event_time)
 {
     printf("Event at second %i\n", event_time);
 
+    // Start analyzing features.
     resume_timer();
     FastFourierFeature fft_feature;
     fast_fourier_transform(&fft_feature, amps, PERFORMANCE_ANALYSIS_DATA_BUFFER_LEN, event);
     RootMeanSquareFeature rms_feature;
     root_mean_square_feature(&rms_feature, volts, amps, PERFORMANCE_ANALYSIS_DATA_BUFFER_LEN, event);
     pause_timer();
-
+    
+    
+    // Log data related to the features.
     const int data_points_logged =  DATA_POINTS_PER_FEATURE + DATA_POINTS_PER_WAVE_LENGTH;
     const int log_start = event - DATA_POINTS_PER_WAVE_LENGTH;
 
