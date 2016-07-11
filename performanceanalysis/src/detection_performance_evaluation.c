@@ -1,5 +1,6 @@
 
 #include <time.h>
+#include <stdint.h>
 
 #include "file_config_loader.h"
 #include "file_loader.h"
@@ -60,8 +61,8 @@ int analyze_algorithm_performance(const char* path_to_sound_file, const char* pa
 
 /**
  * @brief Evaluates one hour of power data. It sums the time used to do the calculations without loading the sound file.
- * 
- * 
+ *
+ *
  */
 static int do_measurements(Calibration* calib, UkDaleFile* file, ChannelProgress* progress)
 {
@@ -78,13 +79,13 @@ static int do_measurements(Calibration* calib, UkDaleFile* file, ChannelProgress
         fflush(stdout);
     }
 
-    printf("total clocks since start of event evaluation: %li at %li clock per second. In total we need %li clocks to evaluate a second\n", time_elapsed, CLOCKS_PER_SEC, time_elapsed/(t-t0));
+    printf("total clocks since start of event evaluation: %li. In total we need %li clocks to evaluate a second\n", time_elapsed, time_elapsed / (t - t0));
     return 1;
 }
 
 /**
- * @brief Detects events within one second at most. 
- * 
+ * @brief Detects events within one second at most.
+ *
  * We dont specify how much time we need exactly because when an event is detected we buffer another half a second to make sure that there is enough data to analyze an event.
  * When one second passes we will increase the time stamp variable.
  */
@@ -102,8 +103,8 @@ static int evaluate_once(int* second_time_stamp, UkDaleFile* file, Calibration* 
     time_offset_counter += next_offset;
 
     // If we passed a second, increase the time stamp
-    if (time_offset_counter > 16000) {
-        time_offset_counter -= 16000;
+    if (time_offset_counter > DATA_POINTS_PER_SECOND) {
+        time_offset_counter -= DATA_POINTS_PER_SECOND;
         ++(*second_time_stamp);
     }
 
@@ -116,7 +117,7 @@ static int evaluate_once(int* second_time_stamp, UkDaleFile* file, Calibration* 
 
     //An event was detected. Now we will analyze features on this event and also log some data.
     if (event != -1) {
-        
+
         buffer_offset = read_uk_dale_to_ring_buffer(file, calib, volts, amps, PERFORMANCE_ANALYSIS_DATA_BUFFER_LEN, read_data, next_offset);
         time_offset_counter += buffer_offset;
 
@@ -139,8 +140,8 @@ static int do_event_evaluation(int event, int event_time)
     RootMeanSquareFeature rms_feature;
     root_mean_square_feature(&rms_feature, volts, amps, PERFORMANCE_ANALYSIS_DATA_BUFFER_LEN, event);
     pause_timer();
-    
-    
+
+
     // Log data related to the features.
     const int data_points_logged =  DATA_POINTS_PER_FEATURE + DATA_POINTS_PER_WAVE_LENGTH;
     const int log_start = event - DATA_POINTS_PER_WAVE_LENGTH;
@@ -153,20 +154,49 @@ static int do_event_evaluation(int event, int event_time)
     return 0;
 }
 
+
+
+//  Windows
+#ifdef _WIN32
+
+#include <intrin.h>
+uint64_t rdtsc()
+{
+    return __rdtsc();
+}
+
+//  Linux/GCC
+#else
+
+uint64_t rdtsc()
+{
+#if defined(__GNUC__) && defined(__ARM_ARCH_7A__)
+    uint32_t r = 0;
+    asm volatile("mrc p15, 0, %0, c9, c13, 0" : "=r"(r));
+    return r;
+#else
+    unsigned int lo, hi;
+    __asm__ __volatile__("rdtsc" : "=a"(lo), "=d"(hi));
+    return ((uint64_t)hi << 32) | lo;
+#endif
+
+}
+#endif
+
 static void reset_timer()
 {
     time_elapsed = 0;
-    start_time = clock();
+    start_time = rdtsc();
 }
 
 static void pause_timer()
 {
-    time_elapsed += clock() - start_time;
+    time_elapsed += rdtsc() - start_time;
 }
 
 void resume_timer()
 {
-    start_time = clock();
+    start_time = rdtsc();
 }
 
 

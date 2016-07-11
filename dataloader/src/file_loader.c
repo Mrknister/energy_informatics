@@ -10,6 +10,10 @@ int open_uk_dale_file(const char* fname, UkDaleFile* file)
 {
     SF_INFO file_info;
     file->snd_file = sf_open(fname, SFM_READ, &file_info);
+    long int time = 0, garbage;
+    char garbage_2;
+    sscanf(fname,"%ld_%ld.fla%[c]", &time, &garbage,&garbage_2);
+    file->start_time = time;
 
     if (! file_ok(&file_info, file->snd_file)) {
         if (file->snd_file != NULL) {

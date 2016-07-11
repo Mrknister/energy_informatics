@@ -19,6 +19,7 @@ extern "C" {
   **/
 typedef struct {
     SNDFILE* snd_file;
+    long int start_time;
 } UkDaleFile;
 
 
