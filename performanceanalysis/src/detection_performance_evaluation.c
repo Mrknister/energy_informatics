@@ -50,7 +50,17 @@ int analyze_algorithm_performance(const char* path_to_sound_file, const char* pa
         close_uk_dale_file(&file);
         return -3;
     }
+#if defined(__GNUC__) && defined(__arm__)
 
+    #define PERF_DEF_OPTS (1 | 16)
+
+        /* Enable user-mode access to counters. */
+        asm volatile("mcr p15, 0, %0, c9, c14, 0" :: "r"(1));
+        /* Program PMU and enable all counters */
+        asm volatile("mcr p15, 0, %0, c9, c12, 0" :: "r"(PERF_DEF_OPTS));
+        asm volatile("mcr p15, 0, %0, c9, c12, 1" :: "r"(0x8000000f));
+
+#endif
     int success = do_measurements(&calib, &file, &progress);
 
     close_channel_progress(&progress);
