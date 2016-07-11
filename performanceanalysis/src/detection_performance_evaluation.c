@@ -170,7 +170,7 @@ uint64_t rdtsc()
 
 uint64_t rdtsc()
 {
-#if defined(__GNUC__) && defined(__ARM_ARCH_7A__)
+#if defined(__GNUC__) && defined(__arm__)
     uint32_t r = 0;
     asm volatile("mrc p15, 0, %0, c9, c13, 0" : "=r"(r));
     return r;
