@@ -1,6 +1,7 @@
 
 #include <time.h>
 #include <stdint.h>
+#include "timing.h"
 
 #include "file_config_loader.h"
 #include "file_loader.h"
@@ -50,17 +51,7 @@ int analyze_algorithm_performance(const char* path_to_sound_file, const char* pa
         close_uk_dale_file(&file);
         return -3;
     }
-#if defined(__GNUC__) && defined(__arm__)
 
-    #define PERF_DEF_OPTS (1 | 16)
-
-        /* Enable user-mode access to counters. */
-        asm volatile("mcr p15, 0, %0, c9, c14, 0" :: "r"(1));
-        /* Program PMU and enable all counters */
-        asm volatile("mcr p15, 0, %0, c9, c12, 0" :: "r"(PERF_DEF_OPTS));
-        asm volatile("mcr p15, 0, %0, c9, c12, 1" :: "r"(0x8000000f));
-
-#endif
     int success = do_measurements(&calib, &file, &progress);
 
     close_channel_progress(&progress);
@@ -175,38 +166,22 @@ uint64_t rdtsc()
     return __rdtsc();
 }
 
-//  Linux/GCC
-#else
-
-uint64_t rdtsc()
-{
-#if defined(__GNUC__) && defined(__arm__)
-    uint32_t r = 0;
-    asm volatile("mrc p15, 0, %0, c9, c13, 0" : "=r"(r));
-    return r;
-#else
-    unsigned int lo, hi;
-    __asm__ __volatile__("rdtsc" : "=a"(lo), "=d"(hi));
-    return ((uint64_t)hi << 32) | lo;
-#endif
-
-}
 #endif
 
 static void reset_timer()
 {
     time_elapsed = 0;
-    start_time = rdtsc();
+    start_time = cpucycles();
 }
 
 static void pause_timer()
 {
-    time_elapsed += rdtsc() - start_time;
+    time_elapsed += cpucycles() - start_time;
 }
 
 void resume_timer()
 {
-    start_time = rdtsc();
+    start_time = cpucycles();
 }
 
 
