@@ -1,7 +1,6 @@
 
 #include <time.h>
 #include <stdint.h>
-#include "timing.h"
 
 #include "file_config_loader.h"
 #include "file_loader.h"
@@ -166,22 +165,36 @@ uint64_t rdtsc()
     return __rdtsc();
 }
 
+//  Linux/GCC
+#else
+
+uint64_t rdtsc()
+{
+#if defined(__GNUC__) && defined(__arm__)
+return 0;
+#else
+    unsigned int lo, hi;
+    __asm__ __volatile__("rdtsc" : "=a"(lo), "=d"(hi));
+    return ((uint64_t)hi << 32) | lo;
+#endif
+
+}
 #endif
 
 static void reset_timer()
 {
     time_elapsed = 0;
-    start_time = cpucycles();
+    start_time = rdtsc();
 }
 
 static void pause_timer()
 {
-    time_elapsed += cpucycles() - start_time;
+    time_elapsed += rdtsc() - start_time;
 }
 
 void resume_timer()
 {
-    start_time = cpucycles();
+    start_time = rdtsc();
 }
 
 
