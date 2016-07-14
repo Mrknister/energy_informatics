@@ -7,7 +7,7 @@ set(EXTERNAL_DEPENDENCIES_DIR "${CMAKE_SOURCE_DIR}/external")
 
 set(CMAKE_BUILD_TYPE DEBUG)
 set(CMAKE_C_FLAGS "-O0 -ggdb")
-set(CMAKE_C_FLAGS_DEBUG "-O0 -ggdb -Wall")
+set(CMAKE_C_FLAGS_DEBUG "-O0 -g -Wall -std=gnu99 -pg")
 
 add_custom_target(doc)
 
