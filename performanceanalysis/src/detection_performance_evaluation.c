@@ -144,7 +144,7 @@ static int do_event_evaluation(int event, int event_time)
 
     // Log data related to the features.
     const int data_points_logged =  DATA_POINTS_PER_FEATURE + DATA_POINTS_PER_WAVE_LENGTH;
-    const int log_start = event - DATA_POINTS_PER_WAVE_LENGTH;
+    const int log_start = (event - DATA_POINTS_PER_WAVE_LENGTH + PERFORMANCE_ANALYSIS_DATA_BUFFER_LEN) % PERFORMANCE_ANALYSIS_DATA_BUFFER_LEN;
 
     log_event("", event_time, amps, PERFORMANCE_ANALYSIS_DATA_BUFFER_LEN, data_points_logged, log_start);
 
@@ -171,7 +171,7 @@ uint64_t rdtsc()
 uint64_t rdtsc()
 {
 #if defined(__GNUC__) && defined(__arm__)
-return 0;
+    return 0;
 #else
     unsigned int lo, hi;
     __asm__ __volatile__("rdtsc" : "=a"(lo), "=d"(hi));

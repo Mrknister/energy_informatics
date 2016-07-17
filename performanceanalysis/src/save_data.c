@@ -11,7 +11,9 @@ int save_float_array(const char* file_name, float* buffer, int buffer_size, int 
     }
     int counter = 0;
     for (; counter < num_data; ++counter) {
-        if (fprintf(f, "%f\n", buffer[(offset + counter) % buffer_size]) < 0) {
+        int pos = (offset + counter) % buffer_size;
+        float val = buffer[pos];
+        if (fprintf(f, "%f\n", val) < 0) {
             fclose(f);
             return 0;
         }

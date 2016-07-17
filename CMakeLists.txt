@@ -6,8 +6,10 @@ set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/Modules/")
 set(EXTERNAL_DEPENDENCIES_DIR "${CMAKE_SOURCE_DIR}/external")
 
 set(CMAKE_BUILD_TYPE DEBUG)
-set(CMAKE_C_FLAGS "-O0 -ggdb")
-set(CMAKE_C_FLAGS_DEBUG "-O0 -g -Wall -std=gnu99 -pg")
+set(CMAKE_C_FLAGS "-Wall -g -std=gnu99")
+set(CMAKE_C_FLAGS_RELEASE "-O3 ")
+
+set(CMAKE_C_FLAGS_DEBUG "-O0 ")
 
 add_custom_target(doc)
 
