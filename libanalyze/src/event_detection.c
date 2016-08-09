@@ -29,16 +29,18 @@ int detect_event(float* voltage, float* current, int buffer_size, int bytes_to_a
     if (prev_rms == -1234523456345) {
         prev_rms = root_mean_square(voltage, current, buffer_size, counter + offset);
     }
+    
 
-    for (; counter < bytes_to_analyze - DATA_POINTS_PER_WAVE_LENGTH; counter += DATA_POINTS_PER_WAVE_LENGTH) {
+    for (; counter <= bytes_to_analyze - DATA_POINTS_PER_WAVE_LENGTH; counter += DATA_POINTS_PER_WAVE_LENGTH) {
 
         float current_rms = root_mean_square(voltage, current, buffer_size, counter + offset);
 
+
         if (prev_rms < current_rms - CURRENT_DIFFERENCE_EVENT_TRIGGER) {
+            
             prev_rms = current_rms ;
             return (counter + offset) % buffer_size;
         }
-
         prev_rms = current_rms * 0.2 + prev_rms * 0.8;
     }
 

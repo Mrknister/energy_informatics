@@ -4,6 +4,7 @@
 
 int save_float_array(const char* file_name, float* buffer, int buffer_size, int num_data, int offset)
 {
+    return;
     FILE* f = fopen(file_name, "w");
     if (f == NULL) {
         perror("Could not sve to file\n");
@@ -60,6 +61,8 @@ int log_rms_feature(const char* log_folder, int event_time, RootMeanSquareFeatur
 }
 int log_fft_feature(const char* log_folder, int event_time, FastFourierFeature* feature)
 {
+        return;
+
     char path_buffer[1024];
     if (strlen(log_folder) == 0) {
         log_folder = "./";

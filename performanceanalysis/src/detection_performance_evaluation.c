@@ -131,7 +131,7 @@ static int evaluate_once(int* second_time_stamp, UkDaleFile* file, Calibration* 
 
 static int do_event_evaluation(int event, int event_time)
 {
-    printf("Event at second %i\n", event_time);
+    //printf("Event at second %i\n", event_time);
 
     // Start analyzing features.
     resume_timer();
