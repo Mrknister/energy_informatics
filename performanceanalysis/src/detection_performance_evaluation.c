@@ -79,7 +79,7 @@ static int do_measurements(Calibration* calib, UkDaleFile* file, ChannelProgress
         fflush(stdout);
     }
 
-    printf("total clocks since start of event evaluation: %li. In total we need %li clocks to evaluate a second\n", time_elapsed, time_elapsed / (t - t0));
+    printf("total clocks since start of event evaluation: %li. In total we need %li clocks to evaluate a second. Each second of calculation time, %i clocks pass\n", time_elapsed, time_elapsed / (t - t0), CLOCKS_PER_SEC);
     return 1;
 }
 
