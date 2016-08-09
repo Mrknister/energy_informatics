@@ -156,45 +156,21 @@ static int do_event_evaluation(int event, int event_time)
 
 
 
-//  Windows
-#ifdef _WIN32
-
-#include <intrin.h>
-uint64_t rdtsc()
-{
-    return __rdtsc();
-}
-
-//  Linux/GCC
-#else
-
-uint64_t rdtsc()
-{
-#if defined(__GNUC__) && defined(__arm__)
-    return 0;
-#else
-    unsigned int lo, hi;
-    __asm__ __volatile__("rdtsc" : "=a"(lo), "=d"(hi));
-    return ((uint64_t)hi << 32) | lo;
-#endif
-
-}
-#endif
 
 static void reset_timer()
 {
     time_elapsed = 0;
-    start_time = rdtsc();
+    start_time = clock();
 }
 
 static void pause_timer()
 {
-    time_elapsed += rdtsc() - start_time;
+    time_elapsed += clock() - start_time;
 }
 
 void resume_timer()
 {
-    start_time = rdtsc();
+    start_time = clock();
 }
 
 
