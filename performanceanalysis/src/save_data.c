@@ -26,6 +26,7 @@ int save_float_array(const char* file_name, float* buffer, int buffer_size, int 
 
 int log_event(const char* log_folder, int event_time, float* buffer, int buffer_size, int num_data, int event_pos)
 {
+    return;
     char path_buffer[1024];
     if (strlen(log_folder) == 0) {
         log_folder = "./";
@@ -41,6 +42,7 @@ int log_event(const char* log_folder, int event_time, float* buffer, int buffer_
 
 int log_rms_feature(const char* log_folder, int event_time, RootMeanSquareFeature* feature)
 {
+    return;
     char path_buffer[1024];
     if (strlen(log_folder) == 0) {
         log_folder = "./";
@@ -61,7 +63,7 @@ int log_rms_feature(const char* log_folder, int event_time, RootMeanSquareFeatur
 }
 int log_fft_feature(const char* log_folder, int event_time, FastFourierFeature* feature)
 {
-        return;
+    return;
 
     char path_buffer[1024];
     if (strlen(log_folder) == 0) {
