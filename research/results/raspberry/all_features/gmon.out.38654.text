@@ -1,0 +1,381 @@
+Flat profile:
+
+Each sample counts as 0.01 seconds.
+  %   cumulative   self              self     total           
+ time   seconds   seconds    calls   s/call   s/call  name    
+ 33.63     37.58    37.58  7134464     0.00     0.00  kf_bfly5
+ 27.62     68.45    30.87    75516     0.00     0.00  kf_bfly4
+ 10.43     80.10    11.66     7193     0.00     0.00  read_uk_dale_to_ring_buffer
+  7.24     88.20     8.09     3596     0.00     0.02  kf_work
+  6.62     95.60     7.40     3596     0.00     0.00  kiss_fft_alloc
+  4.98    101.16     5.56                             __aeabi_idivmod
+  3.46    105.03     3.87    89901     0.00     0.00  root_mean_square
+  3.18    108.58     3.55                             __divsi3
+  2.78    111.69     3.11     3596     0.00     0.02  fast_fourier_transform
+  0.02    111.71     0.03     3596     0.00     0.00  root_mean_square_feature
+  0.02    111.73     0.02     3596     0.00     0.00  kf_factor
+  0.01    111.74     0.01     7192     0.00     0.00  pause_timer
+  0.01    111.75     0.01     3596     0.00     0.03  do_event_evaluation
+  0.01    111.76     0.01     3596     0.00     0.02  kiss_fft_stride
+  0.01    111.77     0.01                             kf_bfly3
+  0.00    111.78     0.01        1     0.01     0.01  file_ok
+  0.00    111.78     0.00     7192     0.00     0.00  resume_timer
+  0.00    111.78     0.00     3597     0.00     0.03  evaluate_once
+  0.00    111.78     0.00     3596     0.00     0.00  detect_event
+  0.00    111.78     0.00     3596     0.00     0.02  kiss_fft
+  0.00    111.78     0.00     3596     0.00     0.00  log_event
+  0.00    111.78     0.00     3596     0.00     0.00  log_fft_feature
+  0.00    111.78     0.00     3596     0.00     0.00  log_rms_feature
+  0.00    111.78     0.00      220     0.00     0.00  is_meter_channel_file
+  0.00    111.78     0.00       54     0.00     0.00  close_meter_readings_channel
+  0.00    111.78     0.00       54     0.00     0.00  open_meter_readings_channel
+  0.00    111.78     0.00       11     0.00     0.00  rstrip
+  0.00    111.78     0.00        8     0.00     0.00  lskip
+  0.00    111.78     0.00        7     0.00     0.00  find_chars_or_comment
+  0.00    111.78     0.00        4     0.00     0.00  strncpy0
+  0.00    111.78     0.00        3     0.00     0.00  handler
+  0.00    111.78     0.00        1     0.00   102.66  analyze_algorithm_performance
+  0.00    111.78     0.00        1     0.00     0.00  close_channel_progress
+  0.00    111.78     0.00        1     0.00     0.00  close_uk_dale_file
+  0.00    111.78     0.00        1     0.00     0.00  count_files_in_directory
+  0.00    111.78     0.00        1     0.00   102.65  do_measurements
+  0.00    111.78     0.00        1     0.00     0.00  ini_parse
+  0.00    111.78     0.00        1     0.00     0.00  ini_parse_file
+  0.00    111.78     0.00        1     0.00     0.00  ini_parse_stream
+  0.00    111.78     0.00        1     0.00     0.00  init_channel_progress
+  0.00    111.78     0.00        1     0.00     0.00  open_all_channels_in_folder
+  0.00    111.78     0.00        1     0.00     0.01  open_uk_dale_file
+  0.00    111.78     0.00        1     0.00     0.00  parse_calibration
+  0.00    111.78     0.00        1     0.00     0.00  reset_timer
+
+ %         the percentage of the total running time of the
+time       program used by this function.
+
+cumulative a running sum of the number of seconds accounted
+ seconds   for by this function and those listed above it.
+
+ self      the number of seconds accounted for by this
+seconds    function alone.  This is the major sort for this
+           listing.
+
+calls      the number of times this function was invoked, if
+           this function is profiled, else blank.
+
+ self      the average number of milliseconds spent in this
+ms/call    function per call, if this function is profiled,
+	   else blank.
+
+ total     the average number of milliseconds spent in this
+ms/call    function and its descendents per call, if this
+	   function is profiled, else blank.
+
+name       the name of the function.  This is the minor sort
+           for this listing. The index shows the location of
+	   the function in the gprof listing. If the index is
+	   in parenthesis it shows where it would appear in
+	   the gprof listing if it were to be printed.
+
+Copyright (C) 2012-2015 Free Software Foundation, Inc.
+
+Copying and distribution of this file, with or without modification,
+are permitted in any medium without royalty provided the copyright
+notice and this notice are preserved.
+
+		     Call graph (explanation follows)
+
+
+granularity: each sample hit covers 2 byte(s) for 0.01% of 111.78 seconds
+
+index % time    self  children    called     name
+                0.00  102.66       1/1           main [2]
+[1]     91.8    0.00  102.66       1         analyze_algorithm_performance [1]
+                0.00  102.65       1/1           do_measurements [4]
+                0.00    0.01       1/1           open_uk_dale_file [23]
+                0.00    0.00       1/1           parse_calibration [44]
+                0.00    0.00       1/1           init_channel_progress [42]
+                0.00    0.00       1/1           close_channel_progress [36]
+                0.00    0.00       1/1           close_uk_dale_file [37]
+-----------------------------------------------
+                                                 <spontaneous>
+[2]     91.8    0.00  102.66                 main [2]
+                0.00  102.66       1/1           analyze_algorithm_performance [1]
+-----------------------------------------------
+                0.00  102.65    3597/3597        do_measurements [4]
+[3]     91.8    0.00  102.65    3597         evaluate_once [3]
+                0.01   90.82    3596/3596        do_event_evaluation [5]
+               11.66    0.00    7193/7193        read_uk_dale_to_ring_buffer [12]
+                0.00    0.15    3596/3596        detect_event [18]
+                0.01    0.00    3596/7192        pause_timer [20]
+                0.00    0.00    3596/7192        resume_timer [24]
+-----------------------------------------------
+                0.00  102.65       1/1           analyze_algorithm_performance [1]
+[4]     91.8    0.00  102.65       1         do_measurements [4]
+                0.00  102.65    3597/3597        evaluate_once [3]
+                0.00    0.00       1/1           reset_timer [45]
+-----------------------------------------------
+                0.01   90.82    3596/3596        evaluate_once [3]
+[5]     81.3    0.01   90.82    3596         do_event_evaluation [5]
+                3.11   83.97    3596/3596        fast_fourier_transform [6]
+                0.03    3.71    3596/3596        root_mean_square_feature [16]
+                0.01    0.00    3596/7192        pause_timer [20]
+                0.00    0.00    3596/7192        resume_timer [24]
+                0.00    0.00    3596/3596        log_event [25]
+                0.00    0.00    3596/3596        log_rms_feature [27]
+                0.00    0.00    3596/3596        log_fft_feature [26]
+-----------------------------------------------
+                3.11   83.97    3596/3596        do_event_evaluation [5]
+[6]     77.9    3.11   83.97    3596         fast_fourier_transform [6]
+                0.00   76.55    3596/3596        kiss_fft [7]
+                7.40    0.02    3596/3596        kiss_fft_alloc [13]
+-----------------------------------------------
+                0.00   76.55    3596/3596        fast_fourier_transform [6]
+[7]     68.5    0.00   76.55    3596         kiss_fft [7]
+                0.01   76.54    3596/3596        kiss_fft_stride [8]
+-----------------------------------------------
+                0.01   76.54    3596/3596        kiss_fft [7]
+[8]     68.5    0.01   76.54    3596         kiss_fft_stride [8]
+                8.09   68.45    3596/3596        kf_work [9]
+-----------------------------------------------
+                             7206384             kf_work [9]
+                8.09   68.45    3596/3596        kiss_fft_stride [8]
+[9]     68.5    8.09   68.45    3596+7206384 kf_work [9]
+               37.58    0.00 7134464/7134464     kf_bfly5 [10]
+               30.87    0.00   75516/75516       kf_bfly4 [11]
+                             7206384             kf_work [9]
+-----------------------------------------------
+               37.58    0.00 7134464/7134464     kf_work [9]
+[10]    33.6   37.58    0.00 7134464         kf_bfly5 [10]
+-----------------------------------------------
+               30.87    0.00   75516/75516       kf_work [9]
+[11]    27.6   30.87    0.00   75516         kf_bfly4 [11]
+-----------------------------------------------
+               11.66    0.00    7193/7193        evaluate_once [3]
+[12]    10.4   11.66    0.00    7193         read_uk_dale_to_ring_buffer [12]
+-----------------------------------------------
+                7.40    0.02    3596/3596        fast_fourier_transform [6]
+[13]     6.6    7.40    0.02    3596         kiss_fft_alloc [13]
+                0.02    0.00    3596/3596        kf_factor [19]
+-----------------------------------------------
+                                                 <spontaneous>
+[14]     5.0    5.56    0.00                 __aeabi_idivmod [14]
+-----------------------------------------------
+                0.15    0.00    3597/89901       detect_event [18]
+                3.71    0.00   86304/89901       root_mean_square_feature [16]
+[15]     3.5    3.87    0.00   89901         root_mean_square [15]
+-----------------------------------------------
+                0.03    3.71    3596/3596        do_event_evaluation [5]
+[16]     3.3    0.03    3.71    3596         root_mean_square_feature [16]
+                3.71    0.00   86304/89901       root_mean_square [15]
+-----------------------------------------------
+                                                 <spontaneous>
+[17]     3.2    3.55    0.00                 __divsi3 [17]
+-----------------------------------------------
+                0.00    0.15    3596/3596        evaluate_once [3]
+[18]     0.1    0.00    0.15    3596         detect_event [18]
+                0.15    0.00    3597/89901       root_mean_square [15]
+-----------------------------------------------
+                0.02    0.00    3596/3596        kiss_fft_alloc [13]
+[19]     0.0    0.02    0.00    3596         kf_factor [19]
+-----------------------------------------------
+                0.01    0.00    3596/7192        evaluate_once [3]
+                0.01    0.00    3596/7192        do_event_evaluation [5]
+[20]     0.0    0.01    0.00    7192         pause_timer [20]
+-----------------------------------------------
+                                                 <spontaneous>
+[21]     0.0    0.01    0.00                 kf_bfly3 [21]
+-----------------------------------------------
+                0.01    0.00       1/1           open_uk_dale_file [23]
+[22]     0.0    0.01    0.00       1         file_ok [22]
+-----------------------------------------------
+                0.00    0.01       1/1           analyze_algorithm_performance [1]
+[23]     0.0    0.00    0.01       1         open_uk_dale_file [23]
+                0.01    0.00       1/1           file_ok [22]
+-----------------------------------------------
+                0.00    0.00    3596/7192        evaluate_once [3]
+                0.00    0.00    3596/7192        do_event_evaluation [5]
+[24]     0.0    0.00    0.00    7192         resume_timer [24]
+-----------------------------------------------
+                0.00    0.00    3596/3596        do_event_evaluation [5]
+[25]     0.0    0.00    0.00    3596         log_event [25]
+-----------------------------------------------
+                0.00    0.00    3596/3596        do_event_evaluation [5]
+[26]     0.0    0.00    0.00    3596         log_fft_feature [26]
+-----------------------------------------------
+                0.00    0.00    3596/3596        do_event_evaluation [5]
+[27]     0.0    0.00    0.00    3596         log_rms_feature [27]
+-----------------------------------------------
+                0.00    0.00     110/220         count_files_in_directory [38]
+                0.00    0.00     110/220         open_all_channels_in_folder [43]
+[28]     0.0    0.00    0.00     220         is_meter_channel_file [28]
+-----------------------------------------------
+                0.00    0.00      54/54          close_channel_progress [36]
+[29]     0.0    0.00    0.00      54         close_meter_readings_channel [29]
+-----------------------------------------------
+                0.00    0.00      54/54          open_all_channels_in_folder [43]
+[30]     0.0    0.00    0.00      54         open_meter_readings_channel [30]
+-----------------------------------------------
+                0.00    0.00      11/11          ini_parse_stream [41]
+[31]     0.0    0.00    0.00      11         rstrip [31]
+-----------------------------------------------
+                0.00    0.00       8/8           ini_parse_stream [41]
+[32]     0.0    0.00    0.00       8         lskip [32]
+-----------------------------------------------
+                0.00    0.00       7/7           ini_parse_stream [41]
+[33]     0.0    0.00    0.00       7         find_chars_or_comment [33]
+-----------------------------------------------
+                0.00    0.00       4/4           ini_parse_stream [41]
+[34]     0.0    0.00    0.00       4         strncpy0 [34]
+-----------------------------------------------
+                0.00    0.00       3/3           ini_parse_stream [41]
+[35]     0.0    0.00    0.00       3         handler [35]
+-----------------------------------------------
+                0.00    0.00       1/1           analyze_algorithm_performance [1]
+[36]     0.0    0.00    0.00       1         close_channel_progress [36]
+                0.00    0.00      54/54          close_meter_readings_channel [29]
+-----------------------------------------------
+                0.00    0.00       1/1           analyze_algorithm_performance [1]
+[37]     0.0    0.00    0.00       1         close_uk_dale_file [37]
+-----------------------------------------------
+                0.00    0.00       1/1           open_all_channels_in_folder [43]
+[38]     0.0    0.00    0.00       1         count_files_in_directory [38]
+                0.00    0.00     110/220         is_meter_channel_file [28]
+-----------------------------------------------
+                0.00    0.00       1/1           parse_calibration [44]
+[39]     0.0    0.00    0.00       1         ini_parse [39]
+                0.00    0.00       1/1           ini_parse_file [40]
+-----------------------------------------------
+                0.00    0.00       1/1           ini_parse [39]
+[40]     0.0    0.00    0.00       1         ini_parse_file [40]
+                0.00    0.00       1/1           ini_parse_stream [41]
+-----------------------------------------------
+                0.00    0.00       1/1           ini_parse_file [40]
+[41]     0.0    0.00    0.00       1         ini_parse_stream [41]
+                0.00    0.00      11/11          rstrip [31]
+                0.00    0.00       8/8           lskip [32]
+                0.00    0.00       7/7           find_chars_or_comment [33]
+                0.00    0.00       4/4           strncpy0 [34]
+                0.00    0.00       3/3           handler [35]
+-----------------------------------------------
+                0.00    0.00       1/1           analyze_algorithm_performance [1]
+[42]     0.0    0.00    0.00       1         init_channel_progress [42]
+                0.00    0.00       1/1           open_all_channels_in_folder [43]
+-----------------------------------------------
+                0.00    0.00       1/1           init_channel_progress [42]
+[43]     0.0    0.00    0.00       1         open_all_channels_in_folder [43]
+                0.00    0.00     110/220         is_meter_channel_file [28]
+                0.00    0.00      54/54          open_meter_readings_channel [30]
+                0.00    0.00       1/1           count_files_in_directory [38]
+-----------------------------------------------
+                0.00    0.00       1/1           analyze_algorithm_performance [1]
+[44]     0.0    0.00    0.00       1         parse_calibration [44]
+                0.00    0.00       1/1           ini_parse [39]
+-----------------------------------------------
+                0.00    0.00       1/1           do_measurements [4]
+[45]     0.0    0.00    0.00       1         reset_timer [45]
+-----------------------------------------------
+
+ This table describes the call tree of the program, and was sorted by
+ the total amount of time spent in each function and its children.
+
+ Each entry in this table consists of several lines.  The line with the
+ index number at the left hand margin lists the current function.
+ The lines above it list the functions that called this function,
+ and the lines below it list the functions this one called.
+ This line lists:
+     index	A unique number given to each element of the table.
+		Index numbers are sorted numerically.
+		The index number is printed next to every function name so
+		it is easier to look up where the function is in the table.
+
+     % time	This is the percentage of the `total' time that was spent
+		in this function and its children.  Note that due to
+		different viewpoints, functions excluded by options, etc,
+		these numbers will NOT add up to 100%.
+
+     self	This is the total amount of time spent in this function.
+
+     children	This is the total amount of time propagated into this
+		function by its children.
+
+     called	This is the number of times the function was called.
+		If the function called itself recursively, the number
+		only includes non-recursive calls, and is followed by
+		a `+' and the number of recursive calls.
+
+     name	The name of the current function.  The index number is
+		printed after it.  If the function is a member of a
+		cycle, the cycle number is printed between the
+		function's name and the index number.
+
+
+ For the function's parents, the fields have the following meanings:
+
+     self	This is the amount of time that was propagated directly
+		from the function into this parent.
+
+     children	This is the amount of time that was propagated from
+		the function's children into this parent.
+
+     called	This is the number of times this parent called the
+		function `/' the total number of times the function
+		was called.  Recursive calls to the function are not
+		included in the number after the `/'.
+
+     name	This is the name of the parent.  The parent's index
+		number is printed after it.  If the parent is a
+		member of a cycle, the cycle number is printed between
+		the name and the index number.
+
+ If the parents of the function cannot be determined, the word
+ `<spontaneous>' is printed in the `name' field, and all the other
+ fields are blank.
+
+ For the function's children, the fields have the following meanings:
+
+     self	This is the amount of time that was propagated directly
+		from the child into the function.
+
+     children	This is the amount of time that was propagated from the
+		child's children to the function.
+
+     called	This is the number of times the function called
+		this child `/' the total number of times the child
+		was called.  Recursive calls by the child are not
+		listed in the number after the `/'.
+
+     name	This is the name of the child.  The child's index
+		number is printed after it.  If the child is a
+		member of a cycle, the cycle number is printed
+		between the name and the index number.
+
+ If there are any cycles (circles) in the call graph, there is an
+ entry for the cycle-as-a-whole.  This entry shows who called the
+ cycle (as parents) and the members of the cycle (as children.)
+ The `+' recursive calls entry shows the number of function calls that
+ were internal to the cycle, and the calls entry for each member shows,
+ for that member, how many times it was called from other members of
+ the cycle.
+
+Copyright (C) 2012-2015 Free Software Foundation, Inc.
+
+Copying and distribution of this file, with or without modification,
+are permitted in any medium without royalty provided the copyright
+notice and this notice are preserved.
+
+Index by function name
+
+  [14] __aeabi_idivmod        [39] ini_parse              [27] log_rms_feature
+  [17] __divsi3               [40] ini_parse_file         [32] lskip (ini.c)
+   [1] analyze_algorithm_performance [41] ini_parse_stream [43] open_all_channels_in_folder
+  [36] close_channel_progress [42] init_channel_progress  [30] open_meter_readings_channel
+  [29] close_meter_readings_channel [28] is_meter_channel_file [23] open_uk_dale_file
+  [37] close_uk_dale_file     [21] kf_bfly3 (kiss_fft.c)  [44] parse_calibration
+  [38] count_files_in_directory [11] kf_bfly4 (kiss_fft.c) [20] pause_timer (detection_performance_evaluation.c)
+  [18] detect_event           [10] kf_bfly5 (kiss_fft.c)  [12] read_uk_dale_to_ring_buffer
+   [5] do_event_evaluation (detection_performance_evaluation.c) [19] kf_factor (kiss_fft.c) [45] reset_timer (detection_performance_evaluation.c)
+   [4] do_measurements (detection_performance_evaluation.c) [9] kf_work (kiss_fft.c) [24] resume_timer (detection_performance_evaluation.c)
+   [3] evaluate_once (detection_performance_evaluation.c) [7] kiss_fft [15] root_mean_square
+   [6] fast_fourier_transform [13] kiss_fft_alloc         [16] root_mean_square_feature
+  [22] file_ok (file_loader.c) [8] kiss_fft_stride        [31] rstrip (ini.c)
+  [33] find_chars_or_comment (ini.c) [25] log_event       [34] strncpy0 (ini.c)
+  [35] handler (file_config_loader.c) [26] log_fft_feature
